@@ -1,26 +1,28 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import ListLoading from './Components/ListLoading';
 
 function App() {
+  const ListLoader = ListLoading();
+  const [appState, setAppState] = useState({
+    loading: false,
+    contests: null
+  });
+
+  useEffect(() => {
+    setAppState({ loading: true });
+    const apiUrl = `https://codeforces.com/api/contest.list?gym=true`;
+    fetch(apiUrl)
+      .then(res => res.json())
+      .then(res => {
+        setAppState({ loading: false, contests: res });
+      })
+  }, [setAppState]);
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <ListLoader isLoading={appState.loading} contests={appState.contests}/>
     </div>
   );
-}
-
+};
+ 
 export default App;
