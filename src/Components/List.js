@@ -13,7 +13,7 @@ const List =  (props)=>{
                     contests.result.map(contest => { 
                         return (
                             <li>
-                                <span>{contest.id} - {contest.name} - {contest.type} - {contest.difficulty}</span>
+                                <a href={`https://codeforces.com/contest/${contest.id}`}><span>{contest.id} - {contest.name} - {contest.type} - {contest.difficulty}</span></a>
                             </li>
                         );
                     })
