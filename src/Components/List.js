@@ -1,4 +1,5 @@
 import React from 'react';
+import { Table } from 'react-bootstrap';
 
 const List =  (props)=>{
         const { contests } = props;
@@ -8,17 +9,29 @@ const List =  (props)=>{
         return (
             <ul>
                 <h2>All Contest List</h2>
-                <p>{}</p>
+                <Table striped bordered hover responsive>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                 {
                     contests.result.map(contest => { 
                         return (
-                            <li>
-                                <a href={`https://codeforces.com/contest/${contest.id}`}><span>{contest.id} - {contest.name} - {contest.type} - {contest.difficulty}</span></a>
-                            </li>
+                            <tr>
+                                <td>{contest.id}</td>
+                                <td><a href={`https://codeforces.com/contest/${contest.id}`}>{contest.name}</a></td>
+                                <td>{contest.type}</td>
+                            </tr>
                         );
                     })
-
+                    
                 }
+                </tbody>
+                </Table>
             </ul>
         );
     }

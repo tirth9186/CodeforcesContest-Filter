@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ListLoading from './ListLoading';
 import ContestCategory from './ContestCategory';
+import { Jumbotron } from 'react-bootstrap';
 
 function Contests() {
     
@@ -23,7 +24,17 @@ function Contests() {
 
     return (
         <div>
-            <ContestCategory category={contestCategory} setContestCategory={setContestCategory} />
+            <Jumbotron>
+                <div className="row">
+                    <div className="col-3">
+                        <ContestCategory className="mr-auto" category={contestCategory} setContestCategory={setContestCategory} />
+                    </div>
+                    <div className="col-6">
+                        <h2>{contestCategory} Contests List</h2>
+                    </div>
+                </div>
+
+            </Jumbotron>
             <ListLoader isLoading={loading} contests={contests} />
         </div>
     );
