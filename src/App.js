@@ -1,34 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import ListLoading from './Components/ListLoading';
-import ContestType from './Components/ContestType';
-import ContestCategory from './Components/ContestCategory';
-function App() {
-  const ListLoader = ListLoading();
+import CustomNavbar from './Components/CustomNavbar'
+import Home from './Components/Home'
+import Contests from './Components/Contests'
+import Problems from './Components/Problems'
+import { Route, Switch } from 'react-router-dom';
+import { Navbar, Nav, Button, ButtonToolbar } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
+import "react-bootstrap/dist/react-bootstrap.min.js";
 
-  const [loading, setLoading] = useState(false);  
-  const [contests, setContests] = useState(null);
-  const [contestType, setContestType] = useState('All');
-  const [contestCategory, setContestCategory] = useState('All');
-  
-
-
-  useEffect(() => {
-    setLoading(true);
-    const apiUrl = `https://codeforces.com/api/contest.list?lang=en`;
-    fetch(apiUrl)
-      .then(res => res.json())
-      .then(res => {
-        setLoading(false)
-        let final_res = res.result.filter( contest=> (contestType === 'All' || contest.type === contestType) && (contestCategory === 'All' || contest.name.indexOf(contestCategory)!==-1 ))
-        setContests({status:res.status, result:final_res});
-      })
-  },[contestType,contestCategory]);
-  
+function App() {  
   return (
     <div>
-      <ContestType type={contestType} setContestType={setContestType}/>
-      <ContestCategory category = {contestCategory} setContestCategory={setContestCategory} />
-      <ListLoader isLoading={loading} contests={contests}/>
+      <CustomNavbar />
+      <ButtonToolbar className="custom-btn-toolbar">
+        <LinkContainer to="/">
+          <Button>Home</Button>
+        </LinkContainer>
+        <LinkContainer to="/about">
+          <Button>About</Button>
+        </LinkContainer>
+        <LinkContainer to="/users">
+          <Button>Users</Button>
+        </LinkContainer>
+      </ButtonToolbar>
+      <Switch>
+        <Route path="/" component={Home} exact/>
+        <Route path="/contests" component={Contests} />
+        <Route path="/problems" component={Problems} />
+        <Route component={Error}/>
+      </Switch>
     </div>
   );
 };

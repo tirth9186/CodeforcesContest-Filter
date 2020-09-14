@@ -12,7 +12,7 @@ const ContestCategory = (props) => {
             <option value={"Div. 3"}>Div. 3</option>
             <option value={"Educational"}>Educational</option>
         </select >
-        
+
     );
 };
 
