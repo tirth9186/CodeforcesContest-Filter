@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ListLoading from './ListLoading';
 import ContestCategory from './ContestCategory';
+import ContestList from './ContestList';
 import { Jumbotron } from 'react-bootstrap';
 
 function Contests() {
@@ -9,7 +10,7 @@ function Contests() {
     const [loading, setLoading] = useState(false);
     const [contests, setContests] = useState(null);
     const [contestCategory, setContestCategory] = useState('All');
-
+    
     useEffect(() => {
         setLoading(true);
         const apiUrl = `https://codeforces.com/api/contest.list?lang=en`;
@@ -35,7 +36,7 @@ function Contests() {
                 </div>
 
             </Jumbotron>
-            <ListLoader isLoading={loading} contests={contests} />
+            <ListLoader List={ContestList} data={contests} isLoading={loading}/>
         </div>
     );
 };

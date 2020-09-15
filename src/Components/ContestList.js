@@ -1,10 +1,10 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
 
-const List =  (props)=>{
-        const { contests } = props;
-    if (contests !== null) {
-        if (contests.status !== "OK")
+const ContestList =  (props)=>{
+        const { data } = props;
+    if (data !== null) {
+        if (data.status !== "OK")
             return <p>Some Problem in loading data...</p>
         return (
             <ul>
@@ -19,7 +19,7 @@ const List =  (props)=>{
                     </thead>
                     <tbody>
                 {
-                    contests.result.map(contest => { 
+                    data.result.map(contest => { 
                         return (
                             <tr>
                                 <td>{contest.id}</td>
@@ -40,4 +40,4 @@ const List =  (props)=>{
     );
         
 }
-export default List;
+export default ContestList;
