@@ -23,7 +23,7 @@ const ContestList =  (props)=>{
                         return (
                             <tr>
                                 <td>{contest.id}</td>
-                                <td><a href={`https://codeforces.com/contest/${contest.id}`}>{contest.name}</a></td>
+                                <td><a target="_blank" href={`https://codeforces.com/contest/${contest.id}`}>{contest.name}</a></td>
                                 <td>{contest.type}</td>
                             </tr>
                         );

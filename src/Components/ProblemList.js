@@ -25,7 +25,7 @@ const ProblemList = (props) => {
                                     <tr>
                                         <td>{problem.problemData.contestId}</td>
                                         <td>{problem.problemData.index}</td>
-                                        <td><a href={`https://codeforces.com/problemset/problem/${problem.problemData.contestId}/${problem.problemData.index}`}>{problem.problemData.name}</a></td>
+                                        <td><a target="_blank" href={`https://codeforces.com/problemset/problem/${problem.problemData.contestId}/${problem.problemData.index}`}>{problem.problemData.name}</a></td>
                                         <td>{problem.problemData.rating}</td>
                                         <td>{problem.submissions}</td>
                                     </tr>
