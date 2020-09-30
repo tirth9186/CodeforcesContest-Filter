@@ -14,8 +14,8 @@ function App() {
       <CustomNavbar />
       <Switch>
         <Route path="/" component={Home} exact/>
-        <Route path="/contests" component={Contests} />
-        <Route path="/problems" component={Problems} />
+        <Route path="/contests" component={Contests} exact/>
+        <Route path="/problems" component={Problems} exact/>
         <Route component={Error}/>
       </Switch>
     </div>
