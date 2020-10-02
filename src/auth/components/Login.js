@@ -1,10 +1,9 @@
-import React, { useState, useRef } from "reat";
+import React, { useState, useRef } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
-
+import { Col } from "react-bootstrap";
 import AuthService from "../services/auth.service";
-
 const required = (value) => {
     if (!value) {
         return (
@@ -40,7 +39,7 @@ const Login = (props) => {
         form.current.validateAll();
         if (checkBtn.current.context._errors.length === 0) {
             AuthService.login(username, password).then(
-                () => {
+                () => {   
                     props.history.push("/profile");
                     window.location.reload();
                 },
@@ -48,7 +47,7 @@ const Login = (props) => {
                     const resMessage = (error.response && error.response.data && error.response.data.message) ||
                         (error.message) || (error.toString());
                     setMessage(resMessage);
-                    setLoading(false);
+                    setLoading(false);  
                 }
             );
         }
@@ -58,7 +57,7 @@ const Login = (props) => {
     }
 
     return (
-        <div className="col-md-12">
+        <Col md={{ span: 4, offset: 4 }} className="mt-4">
             <div className="card card-container">
                 <img
                     src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
@@ -69,12 +68,12 @@ const Login = (props) => {
                 <Form onSubmit={handleLogin} ref={form}>
                     <div className="form-group">
                         <label htmlFor="username">Username</label>
-                        <input name="username" type="text" className="form-control" value={username} onChange={onChangeUsername} validations={[required]} />
+                        <Input name="username" type="text" className="form-control" value={username} onChange={onChangeUsername} validations={[required]} />
                     </div>
 
                     <div className="form-group">
                         <label htmlFor="password">Password</label>
-                        <input name="password" type="text" className="form-control" value={password} onChange={onChangePassword} validations={[required]} />
+                        <Input name="password" type="password" className="form-control " value={password} onChange={onChangePassword} validations={[required]} />
                     </div>
 
                     <div className="form-group">
@@ -93,10 +92,10 @@ const Login = (props) => {
                             </div>
                         </div>
                     )}
-                    <CheckButton style={{ display: "none" }} ref={checkBtn} />
+                    <CheckButton style={{ display: 'none' }} ref={checkBtn} />
                 </Form>
             </div>
-        </div>
+        </Col>
     );
 
 }

@@ -27,10 +27,10 @@ function Contests() {
         <div>
             <Jumbotron>
                 <div className="row">
-                    <div className="col-3">
+                    <div className="col-12 col-sm-3">
                         <ContestCategory className="mr-auto" category={contestCategory} setContestCategory={setContestCategory} />
                     </div>
-                    <div className="col-6">
+                    <div className="col-12 col-sm-6">
                         <h2>{contestCategory} Contests List</h2>
                     </div>
                 </div>

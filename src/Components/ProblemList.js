@@ -20,12 +20,12 @@ const ProblemList = (props) => {
                     </thead>
                     <tbody>
                         {
-                            data.problems.map(problem => {
+                            data.problems.map((problem, index) => {
                                 return (
-                                    <tr>
+                                    <tr key={index}>
                                         <td>{problem.problemData.contestId}</td>
                                         <td>{problem.problemData.index}</td>
-                                        <td><a target="_blank" href={`https://codeforces.com/problemset/problem/${problem.problemData.contestId}/${problem.problemData.index}`}>{problem.problemData.name}</a></td>
+                                        <td><a target="_blank" rel="noopener noreferrer" href={`https://codeforces.com/problemset/problem/${problem.problemData.contestId}/${problem.problemData.index}`}>{problem.problemData.name}</a></td>
                                         <td>{problem.problemData.rating}</td>
                                         <td>{problem.submissions}</td>
                                     </tr>

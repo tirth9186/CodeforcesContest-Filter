@@ -22,15 +22,39 @@ function Problems() {
             .then(res => res.json())
             .then(res => {
                 setLoading(false)
-                let final_problems = res.result.problems.filter(problem => (true))
-                let pset = new Set();
-                final_problems.forEach(problem => {
-                    pset.add(problem.contestId + problem.index);
-                })
-                let final_statistics = res.result.problemStatistics.filter(problem => pset.has(problem.contestId + problem.index));
+                const levels = new Set(level.split(","));
+                if (levels.size > 1)
+                    levels.delete("");
+                let filter1_set = new Set();
+                let filter2_set = new Set();
+                res.result.problems.forEach(problem => {
+                    let flg = true;
+                    if (!levels.has("") && !levels.has(problem.index))
+                        flg= false;
+                    if (lowrating !== "" && problem.rating < lowrating)
+                        flg = false;
+                    if (highrating !== "" && problem.rating > highrating)
+                        flg = false;
+                    if (flg)
+                        filter1_set.add(problem.contestId + problem.index);
+                });
+                res.result.problemStatistics.forEach(problem => {
+                    let flg=true
+                    if (!filter1_set.has(problem.contestId + problem.index))
+                        flg = false;
+                    if (minsubmissions !== "" && problem.solvedCount < minsubmissions)
+                        flg = false;
+                    if (maxsubmissions !== "" && problem.solvedCount > maxsubmissions)
+                        flg = false;
+                    if (flg)
+                        filter2_set.add(problem.contestId + problem.index);
+                });
+                let data = res.result.problems;
+                let stats = res.result.problemStatistics;
                 let problemList = [];
-                for (let i = 0; i < final_problems.length; i++) {
-                    problemList.push({ problemData: final_problems[i], submissions: final_statistics[i].solvedCount })
+                for (let i = 0; i < data.length; i++) {
+                    if (filter2_set.has(data[i].contestId + data[i].index))
+                        problemList.push({ problemData: data[i], submissions: stats[i].solvedCount });
                 }
                 setProblems({ status: res.status, problems: problemList });
             })

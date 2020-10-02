@@ -19,11 +19,11 @@ const ContestList =  (props)=>{
                     </thead>
                     <tbody>
                 {
-                    data.result.map(contest => { 
+                    data.result.map((contest,index) => { 
                         return (
-                            <tr>
+                            <tr key={index}>
                                 <td>{contest.id}</td>
-                                <td><a target="_blank" href={`https://codeforces.com/contest/${contest.id}`}>{contest.name}</a></td>
+                                <td><a target="_blank" rel="noopener noreferrer" href={`https://codeforces.com/contest/${contest.id}`}>{contest.name}</a></td>
                                 <td>{contest.type}</td>
                             </tr>
                         );
