@@ -14,6 +14,7 @@ import { Route, Switch } from 'react-router-dom';
 import AuthService from "./auth/services/auth.service";
 
 import "react-bootstrap/dist/react-bootstrap.min.js";
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
 
 function App() {
 

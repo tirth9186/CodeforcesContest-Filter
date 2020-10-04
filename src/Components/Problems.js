@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ListLoading from './ListLoading';
 import ProblemList from './ProblemList';
-import { Jumbotron, Card, InputGroup, FormControl,Button,Col } from 'react-bootstrap';
+import { Jumbotron, Card, InputGroup, FormControl, Button, Col } from 'react-bootstrap';
 
 function Problems() {
 
@@ -30,7 +30,7 @@ function Problems() {
                 res.result.problems.forEach(problem => {
                     let flg = true;
                     if (!levels.has("") && !levels.has(problem.index))
-                        flg= false;
+                        flg = false;
                     if (lowrating !== "" && problem.rating < lowrating)
                         flg = false;
                     if (highrating !== "" && problem.rating > highrating)
@@ -39,7 +39,7 @@ function Problems() {
                         filter1_set.add(problem.contestId + problem.index);
                 });
                 res.result.problemStatistics.forEach(problem => {
-                    let flg=true
+                    let flg = true
                     if (!filter1_set.has(problem.contestId + problem.index))
                         flg = false;
                     if (minsubmissions !== "" && problem.solvedCount < minsubmissions)
@@ -66,7 +66,7 @@ function Problems() {
         setLowRating("");
         setMinSubmissions("");
         setMaxSubmissions("");
-        setTrigger(trigger=>(trigger+1)%2);
+        setTrigger(trigger => (trigger + 1) % 2);
     }
 
     return (
@@ -140,14 +140,15 @@ function Problems() {
                             </Card.Body>
                         </Card>
                     </div>
-                    </div>
+                </div>
                 <div className="row mt-2 md-0">
-                    <Col md={{offset: 5 }}>
-                        <Button onClick={() => { setTrigger((trigger)=>(trigger+1)%2)}} >Apply Filters</Button>
+                    <Col md={{ offset: 5 }}>
+                        <Button onClick={() => { setTrigger((trigger) => (trigger + 1) % 2) }} >Apply Filters</Button>
                         <Button className="ml-1" onClick={() => { reset() }} >Reset</Button>
                     </Col>
                 </div>
             </Jumbotron>
+
             <ListLoader List={ProblemList} data={problems} isLoading={loading} />
         </div>
     );

@@ -1,39 +1,24 @@
 import React from 'react';
-import { Table } from 'react-bootstrap';
+import BootstrapTable from 'react-bootstrap-table-next';
+import paginationFactory from 'react-bootstrap-table2-paginator';
 
 const ContestList =  (props)=>{
-        const { data } = props;
+    const { data } = props;
+    const CellFormatter = (cell, row) => {
+        return (<div><a href={"https://codeforces.com/contest/" + row.id}>{cell}</a></div>);
+    };
+    const columns = [
+        { dataField: 'id', text: 'Id' },
+        { dataField: 'name', text: 'Name', formatter: CellFormatter },
+        { dataField: 'type', text: 'Type' },
+    ];
+
     if (data !== null) {
         if (data.status !== "OK")
             return <p>Some Problem in loading data...</p>
-        return (
-            <ul>
-                <h2>All Contest List</h2>
-                <Table striped bordered hover responsive>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Type</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                {
-                    data.result.map((contest,index) => { 
-                        return (
-                            <tr key={index}>
-                                <td>{contest.id}</td>
-                                <td><a target="_blank" rel="noopener noreferrer" href={`https://codeforces.com/contest/${contest.id}`}>{contest.name}</a></td>
-                                <td>{contest.type}</td>
-                            </tr>
-                        );
-                    })
-                    
-                }
-                </tbody>
-                </Table>
-            </ul>
-        );
+        else { 
+            return <BootstrapTable hover striped keyField='id' data={data.result} columns={columns} pagination={paginationFactory()} />;
+        }
     }
     return (
       <p>Wait...</p>  
