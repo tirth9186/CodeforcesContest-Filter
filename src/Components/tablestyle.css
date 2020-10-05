@@ -1,5 +1,6 @@
 .mytable{
-overflow: auto;
+width: fit-content;
+overflow-x: scroll;
 table-layout: auto;
 }
 

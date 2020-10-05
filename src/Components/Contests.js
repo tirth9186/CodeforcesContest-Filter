@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import ListLoading from './ListLoading';
 import ContestCategory from './ContestCategory';
 import ContestList from './ContestList';
@@ -10,17 +10,27 @@ function Contests() {
     const [loading, setLoading] = useState(false);
     const [contests, setContests] = useState(null);
     const [contestCategory, setContestCategory] = useState('All');
-    
-    useEffect(() => {
-        setLoading(true);
+    const cache = useRef({});
+
+    const fetchData = async() => {
         const apiUrl = `https://codeforces.com/api/contest.list?lang=en`;
-        fetch(apiUrl)
-            .then(res => res.json())
-            .then(res => {
-                setLoading(false)
-                let final_res = res.result.filter(contest => (contestCategory === 'All' || contest.name.indexOf(contestCategory) !== -1))
-                setContests({ status: res.status, result: final_res });
-            })
+        setLoading(true);
+        let res = {};
+        if (cache.current[apiUrl]) {
+            res = cache.current[apiUrl];
+            setLoading(false);
+        }
+        else {
+            const response = await fetch(apiUrl);
+            res = await response.json();
+            cache.current[apiUrl] = res;
+            setLoading(false);
+        }
+        let final_res = res.result.filter(contest => (contestCategory === 'All' || contest.name.indexOf(contestCategory) !== -1))
+        setContests({ status: res.status, result: final_res });
+    }
+    useEffect(() => {
+        fetchData();
     }, [contestCategory]);
 
     return (

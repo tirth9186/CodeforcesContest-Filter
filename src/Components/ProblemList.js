@@ -1,19 +1,20 @@
 import React from 'react';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
+
 import './tablestyle.css'
 const ProblemList = (props) => {
     const { data } = props;
     let problemsArr = [];
     const CellFormatter = (cell, row, rowIndex, formatExtraData) => {
-        return (<div><a href={"https://codeforces.com/problemset/problem/" + row.contestId + "/" + row.index}>{cell}</a></div>);
+        return (<div><a target="_blank" rel="noopener noreferrer" href={"https://codeforces.com/problemset/problem/" + row.contestId + "/" + row.index}>{cell}</a></div>);
     };
     const columns = [
-        { dataField: 'contestId', text: 'ContestId'},
-        { dataField: 'index', text: 'Level' },
-        { dataField: 'name', text: 'Name', formatter: CellFormatter},
-        { dataField: 'rating', text: 'Rating' },
-        { dataField: 'submissions', text: 'Submissions' }
+        { dataField: 'contestId', text: 'ContestId', sort: true },
+        { dataField: 'index', text: 'Level', sort: true },
+        { dataField: 'name', text: 'Name', formatter: CellFormatter, sort: true },
+        { dataField: 'rating', text: 'Rating', sort: true },
+        { dataField: 'submissions', text: 'Submissions', sort: true }
     ];
 
     const formatData = (data) => {
@@ -37,7 +38,7 @@ const ProblemList = (props) => {
         else {
             formatData(data);
             return (
-                <BootstrapTable bootstrap4 wrapperClasses="table-responsive mytable" hover striped keyField='id' data={problemsArr} columns={columns} pagination={paginationFactory()}/>
+                <BootstrapTable wrapperClasses="mytable" hover striped keyField='id' data={problemsArr} columns={columns} pagination={paginationFactory()} />
             );
         }
     }

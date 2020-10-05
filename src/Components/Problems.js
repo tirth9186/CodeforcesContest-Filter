@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ListLoading from './ListLoading';
 import ProblemList from './ProblemList';
 import { Jumbotron, Card, InputGroup, FormControl, Button, Col } from 'react-bootstrap';
@@ -13,52 +13,63 @@ function Problems() {
     const [highrating, setHighRating] = useState("");
     const [minsubmissions, setMinSubmissions] = useState("");
     const [maxsubmissions, setMaxSubmissions] = useState("");
-    const [trigger, setTrigger] = useState("");
+    const cache = useRef({});
+
+    const fetchData = async () => {
+        const apiUrl = `https://codeforces.com/api/problemset.problems`;
+        setLoading(true);
+        let res = {};
+        if (cache.current[apiUrl]) {
+            res = cache.current[apiUrl];
+            setLoading(false);
+        }
+        else {
+            const response = await fetch(apiUrl);
+            res = await response.json();
+            cache.current[apiUrl] = res;
+            setLoading(false);
+        }
+
+        const levels = new Set(level.trim().split(","));
+        if (levels.size > 1)
+            levels.delete("");
+        let filter1_set = new Set();
+        let filter2_set = new Set();
+        res.result.problems.forEach(problem => {
+            let f1 = false, f2 = false, f3 = false;
+            if (levels.has("") || levels.has(problem.index))
+                f1 = true;
+            if (lowrating === "" || problem.rating >= lowrating)
+                f2 = true;
+            if (highrating === "" || problem.rating <= highrating)
+                f3 = true;
+            if (f1 && f2 && f3)
+                filter1_set.add(problem.contestId + problem.index);
+        });
+        res.result.problemStatistics.forEach(problem => {
+            let flg = true
+            if (!filter1_set.has(problem.contestId + problem.index))
+                flg = false;
+            if (minsubmissions !== "" && problem.solvedCount < minsubmissions)
+                flg = false;
+            if (maxsubmissions !== "" && problem.solvedCount > maxsubmissions)
+                flg = false;
+            if (flg)
+                filter2_set.add(problem.contestId + problem.index);
+        });
+        let data = res.result.problems;
+        let stats = res.result.problemStatistics;
+        let problemList = [];
+        for (let i = 0; i < data.length; i++) {
+            if (filter2_set.has(data[i].contestId + data[i].index))
+                problemList.push({ problemData: data[i], submissions: stats[i].solvedCount });
+        }
+        setProblems({ status: res.status, problems: problemList });
+    }
 
     useEffect(() => {
-        setLoading(true);
-        const apiUrl = `https://codeforces.com/api/problemset.problems?tags=2-sat`;
-        fetch(apiUrl)
-            .then(res => res.json())
-            .then(res => {
-                setLoading(false)
-                const levels = new Set(level.split(","));
-                if (levels.size > 1)
-                    levels.delete("");
-                let filter1_set = new Set();
-                let filter2_set = new Set();
-                res.result.problems.forEach(problem => {
-                    let flg = true;
-                    if (!levels.has("") && !levels.has(problem.index))
-                        flg = false;
-                    if (lowrating !== "" && problem.rating < lowrating)
-                        flg = false;
-                    if (highrating !== "" && problem.rating > highrating)
-                        flg = false;
-                    if (flg)
-                        filter1_set.add(problem.contestId + problem.index);
-                });
-                res.result.problemStatistics.forEach(problem => {
-                    let flg = true
-                    if (!filter1_set.has(problem.contestId + problem.index))
-                        flg = false;
-                    if (minsubmissions !== "" && problem.solvedCount < minsubmissions)
-                        flg = false;
-                    if (maxsubmissions !== "" && problem.solvedCount > maxsubmissions)
-                        flg = false;
-                    if (flg)
-                        filter2_set.add(problem.contestId + problem.index);
-                });
-                let data = res.result.problems;
-                let stats = res.result.problemStatistics;
-                let problemList = [];
-                for (let i = 0; i < data.length; i++) {
-                    if (filter2_set.has(data[i].contestId + data[i].index))
-                        problemList.push({ problemData: data[i], submissions: stats[i].solvedCount });
-                }
-                setProblems({ status: res.status, problems: problemList });
-            })
-    }, [trigger]);
+        fetchData();
+    }, [level, lowrating, highrating, minsubmissions, maxsubmissions]);
 
     const reset = () => {
         setLevel("");
@@ -66,7 +77,6 @@ function Problems() {
         setLowRating("");
         setMinSubmissions("");
         setMaxSubmissions("");
-        setTrigger(trigger => (trigger + 1) % 2);
     }
 
     return (
@@ -143,7 +153,6 @@ function Problems() {
                 </div>
                 <div className="row mt-2 md-0">
                     <Col md={{ offset: 5 }}>
-                        <Button onClick={() => { setTrigger((trigger) => (trigger + 1) % 2) }} >Apply Filters</Button>
                         <Button className="ml-1" onClick={() => { reset() }} >Reset</Button>
                     </Col>
                 </div>
