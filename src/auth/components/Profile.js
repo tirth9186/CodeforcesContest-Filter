@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import AuthService from "../services/auth.service";
 import ListLoading from "../../Components/ListLoading";
 import ChartLoading from "./ChartLoading";
@@ -22,7 +22,7 @@ const Profile = () => {
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
-            const apiUrl = `https://codeforces.com/api/user.status?handle=${currentUser.handle}&from=1&count=500`;
+            const apiUrl = `https://codeforces.com/api/user.status?handle=${currentUser.handle}`;
             let res = {};
             if (cache.current[currentUser.handle]) {
                 res = cache.current[currentUser.handle];
@@ -64,9 +64,9 @@ const Profile = () => {
 
             const lst1 = Object.keys(acc).map((key) => {
                 if (key === "OK")
-                    return { 'y': (acc[key] / totalSubissions) * 100, 'label': key,color:"green" };
+                    return { 'y': (acc[key] / totalSubissions) * 100, 'label': key, color: "green" };
                 else if (key === "WRONG_ANSWER")
-                    return { 'y': (acc[key] / totalSubissions) * 100, 'label': key,color:"red" };
+                    return { 'y': (acc[key] / totalSubissions) * 100, 'label': key, color: "red" };
                 return { 'y': (acc[key] / totalSubissions) * 100, 'label': key };
             });
 
@@ -156,19 +156,19 @@ const Profile = () => {
                 /> */}
                 <div className="row">
                     <div className="col-sm-6 col-12">
-                        <ChartLoader Chart={CanvasJSChart} isLoading={chartloading||loading} options={accOptions} />
+                        <ChartLoader Chart={CanvasJSChart} isLoading={chartloading || loading} options={accOptions} />
                     </div>
                     <div className="col-sm-6 col-12 mt-sm-2">
-                        <ChartLoader Chart={CanvasJSChart} isLoading={chartloading||loading} options={langOptions} />
+                        <ChartLoader Chart={CanvasJSChart} isLoading={chartloading || loading} options={langOptions} />
                     </div>
                 </div>
                 <div className="row mt-2">
                     <div className="col-sm-12 col-12">
-                        <ChartLoader Chart={CanvasJSChart} isLoading={chartloading||loading} options={lvlOptions} />
+                        <ChartLoader Chart={CanvasJSChart} isLoading={chartloading || loading} options={lvlOptions} />
 
                     </div>
                 </div>
-                <ListLoader List={DataList} data={userData} isLoading={loading||chartloading} />
+                <ListLoader List={DataList} data={userData} isLoading={loading || chartloading} />
             </div>
         );
     }
