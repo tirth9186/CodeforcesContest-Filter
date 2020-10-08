@@ -1,4 +1,4 @@
-import React, { useState, useEffect,useRef } from 'react';
+import React, { useState, useEffect,useRef,useCallback } from 'react';
 import ListLoading from './ListLoading';
 import ContestCategory from './ContestCategory';
 import ContestList from './ContestList';
@@ -12,7 +12,7 @@ function Contests() {
     const [contestCategory, setContestCategory] = useState('All');
     const cache = useRef({});
 
-    const fetchData = async() => {
+    const fetchData = useCallback(async () => {
         const apiUrl = `https://codeforces.com/api/contest.list?lang=en`;
         setLoading(true);
         let res = {};
@@ -28,10 +28,10 @@ function Contests() {
         }
         let final_res = res.result.filter(contest => (contestCategory === 'All' || contest.name.indexOf(contestCategory) !== -1))
         setContests({ status: res.status, result: final_res });
-    }
+    }, [contestCategory]);
     useEffect(() => {
         fetchData();
-    }, [contestCategory]);
+    }, [fetchData]);
 
     return (
         <div>

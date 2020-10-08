@@ -51,6 +51,7 @@ const Register = (props) => {
     const form = useRef();
     const checkBtn = useRef();
 
+    const [handle, setHandle] = useState("");
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -70,6 +71,10 @@ const Register = (props) => {
         setEmail(e.target.value);
     }
 
+    const onChangeHandle = (e) => {
+        setHandle(e.target.value);
+    }
+
     const handleRegister = (e) => {
         e.preventDefault();
         setMessage("");
@@ -77,7 +82,7 @@ const Register = (props) => {
         form.current.validateAll();
 
         if (checkBtn.current.context._errors.length === 0) {
-            AuthService.register(username, email, password).then(
+            AuthService.register(username, email, password, handle).then(
                 (response) => {
                     setMessage(response.data.message);
                     setSuccessful(true);
@@ -98,7 +103,7 @@ const Register = (props) => {
     }
 
     return (
-        <Col md={{span:4,offset:4}} className="mt-4">
+        <Col md={{ span: 4, offset: 4 }} className="mt-4">
             <div className="card card-container">
                 <img
                     src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
@@ -130,6 +135,18 @@ const Register = (props) => {
                                     validations={[required, validEmail]}
                                     className="form-control"
                                     name="email"
+                                />
+                            </div>
+
+                            <div className="form-group">
+                                <label htmlFor="handle">Codeforces Handle</label>
+                                <Input
+                                    type="text"
+                                    value={handle}
+                                    onChange={onChangeHandle}
+                                    validations={[required]}
+                                    className="form-control"
+                                    name="handle"
                                 />
                             </div>
 

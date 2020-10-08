@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef,useCallback } from 'react';
 import ListLoading from './ListLoading';
 import ProblemList from './ProblemList';
 import { Jumbotron, Card, InputGroup, FormControl, Button, Col } from 'react-bootstrap';
@@ -15,7 +15,7 @@ function Problems() {
     const [maxsubmissions, setMaxSubmissions] = useState("");
     const cache = useRef({});
 
-    const fetchData = async () => {
+    const fetchData = useCallback(async () => {
         const apiUrl = `https://codeforces.com/api/problemset.problems`;
         setLoading(true);
         let res = {};
@@ -65,11 +65,11 @@ function Problems() {
                 problemList.push({ problemData: data[i], submissions: stats[i].solvedCount });
         }
         setProblems({ status: res.status, problems: problemList });
-    }
+    }, [level, lowrating, highrating, minsubmissions, maxsubmissions]);
 
     useEffect(() => {
         fetchData();
-    }, [level, lowrating, highrating, minsubmissions, maxsubmissions]);
+    }, [fetchData]);
 
     const reset = () => {
         setLevel("");
