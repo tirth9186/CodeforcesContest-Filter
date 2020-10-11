@@ -188,7 +188,7 @@ const Profile = () => {
     else {
         return (
             <div className="container">
-                <header className="jumbotron col-sm-6 offset-3">
+                <header className="jumbotron col-sm-6 offset-sm-3">
                     <Form onSubmit={handleSearch} ref={form}>
                         <div className="form-group">
                             <Input
