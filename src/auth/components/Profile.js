@@ -1,44 +1,88 @@
 import React, { useState, useEffect, useRef } from "react";
-import AuthService from "../services/auth.service";
 import ListLoading from "../../Components/ListLoading";
 import ChartLoading from "./ChartLoading";
 import DataList from "./DataList";
+import Input from "react-validation/build/input";
+import Form from "react-validation/build/form";
+import CheckButton from "react-validation/build/button";
 import { CanvasJSChart } from 'canvasjs-react-charts'
+import { Button } from 'react-bootstrap';
+
+const validUsername = (value) => {
+    if (value.length < 3 || value.length > 20) {
+        return (
+            <div className="alert alert-danger" role="alert">
+                The Username must be between 3 to 20 characters.
+            </div>
+        );
+    }
+}
+
+const required = (value) => {
+    if (!value) {
+        return (
+            <div className="alert alert-danger" role="alert">
+                This field is required!!
+            </div>
+        );
+    }
+};
 
 const Profile = () => {
+    const form = useRef();
+    const checkBtn = useRef();
     const ListLoader = ListLoading();
     const ChartLoader = ChartLoading();
     const [loading, setLoading] = useState(false);
     const [chartloading, setChartloading] = useState(false);
     const [accOptions, setAccOptions] = useState({});
     const [lvlOptions, setLvlOptions] = useState({});
-    const [langOptions, setLangOptions] = useState({});
+
     const [userData, setUserData] = useState(null);
-    const [currentUser, setcurrentUser] = useState(AuthService.getUser());
+    const [userHandle, setUserHandle] = useState("");
+    const [doSearch, setDoSearch] = useState(false);
     const cache = useRef({});
     let levels = {};
-    let language = {};
     let acc = {};
+    const clearUser = () => {
+        setUserHandle("");
+        setDoSearch(false);
+    }
+
+    const handleChange = (e) => {
+        setUserHandle(e.target.value);
+    }
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        form.current.validateAll();
+        if (checkBtn.current.context._errors.length === 0) {
+            setDoSearch(true);
+        }
+    }
+
     useEffect(() => {
         const fetchData = async () => {
             setLoading(true);
-            const apiUrl = `https://codeforces.com/api/user.status?handle=${currentUser.handle}`;
+            const apiUrl = `https://codeforces.com/api/user.status?handle=${userHandle}`;
             let res = {};
-            if (cache.current[currentUser.handle]) {
-                res = cache.current[currentUser.handle];
+            if (cache.current[userHandle]) {
+                res = cache.current[userHandle];
             }
             else {
                 const response = await fetch(apiUrl);
                 res = await response.json();
-                cache.current[currentUser.handle] = res;
+                cache.current[userHandle] = res;
             }
-            setUserData(res);
+            if (res.status === "OK") {
+                setUserData(res);
+            }
             setLoading(false);
         }
-        if (currentUser !== null) {
+        if (userHandle !== "") {
             fetchData();
         }
-    }, []);
+    }, [doSearch]);
 
     useEffect(() => {
         if (userData != null) {
@@ -48,11 +92,6 @@ const Profile = () => {
                     levels[element.problem.index] = 1;
                 else
                     levels[element.problem.index] += 1;
-
-                if (language[element.programmingLanguage] === undefined)
-                    language[element.programmingLanguage] = 1;
-                else
-                    language[element.programmingLanguage] += 1;
 
                 if (acc[element.verdict] === undefined)
                     acc[element.verdict] = 1;
@@ -72,10 +111,6 @@ const Profile = () => {
 
             const lst2 = Object.keys(levels).map((key) => {
                 return { 'y': levels[key], 'label': key };
-            });
-
-            const lst3 = Object.keys(language).map((key) => {
-                return { 'y': language[key], 'label': key };
             });
 
             const options1 = {
@@ -111,46 +146,24 @@ const Profile = () => {
                     dataPoints: lst2
                 }]
             }
-            const options3 = {
-                theme: "dark2",
-                animationEnabled: true,
-                exportFileName: "languages",
-                exportEnabled: true,
-                title: {
-                    text: "Languages Analysis"
-                },
-                data: [{
-                    type: "pie",
-                    showInLegend: true,
-                    legendText: "{label}",
-                    toolTipContent: "{label}: <strong>{y}</strong>",
-                    indexLabel: "{y}",
-                    indexLabelPlacement: "inside",
-                    dataPoints: lst3
-                }]
-            }
             setAccOptions(options1);
             setLvlOptions(options2);
-            setLangOptions(options3);
             setChartloading(false);
         }
     }, [userData]);
 
 
-    if (currentUser !== null) {
+    if (doSearch) {
         return (
             <div className="container">
                 <header className="jumbotron">
                     <h3>
-                        <strong>{currentUser.username}</strong> Profile
+                        <strong>{userHandle}'s</strong> Profile
                     </h3>
+                    <Button variant="primary" onClick={clearUser}>
+                        Clear
+                    </Button>
                 </header>
-                <p>
-                    <strong>Email:</strong>{currentUser.email}
-                </p>
-                <p>
-                    <strong>Handle:</strong>{currentUser.handle}
-                </p>
                 {/* <CanvasJSChart options={options}
                  onRef={ref => this.chart = ref} 
                 /> */}
@@ -158,9 +171,9 @@ const Profile = () => {
                     <div className="col-sm-6 col-12">
                         <ChartLoader Chart={CanvasJSChart} isLoading={chartloading || loading} options={accOptions} />
                     </div>
-                    <div className="col-sm-6 col-12 mt-sm-2">
+                    {/* <div className="col-sm-6 col-12 mt-sm-2">
                         <ChartLoader Chart={CanvasJSChart} isLoading={chartloading || loading} options={langOptions} />
-                    </div>
+                    </div> */}
                 </div>
                 <div className="row mt-2">
                     <div className="col-sm-12 col-12">
@@ -175,10 +188,24 @@ const Profile = () => {
     else {
         return (
             <div className="container">
-                <header className="alert alert-danger mt-5">
-                    <h3>
-                        Unauthorized Access!!
-                    </h3>
+                <header className="jumbotron col-sm-6 offset-3">
+                    <Form onSubmit={handleSearch} ref={form}>
+                        <div className="form-group">
+                            <Input
+                                type="text"
+                                value={userHandle}
+                                onChange={handleChange}
+                                placeholder="Codeforces Handle"
+                                validations={[required, validUsername]}
+                                className="form-control"
+                                name="username"
+                            />
+                        </div>
+                        <div className="form-group">
+                            <button className="btn btn-block btn-primary">Search</button>
+                        </div>
+                        <CheckButton style={{ display: 'none' }} ref={checkBtn} />
+                    </Form>
                 </header>
             </div>
         );
