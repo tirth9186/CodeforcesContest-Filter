@@ -27,7 +27,7 @@ function App() {
 
   useEffect(() => {
     const user = AuthService.getUser();
-    if (user!=null) {
+    if (user != null) {
       setCurrentUser(user);
       setIsAdmin(user.roles.includes("ROLE_ADMIN"));
     }

@@ -3,7 +3,7 @@ import { Navbar, Nav } from 'react-bootstrap';
 
 function CustomNavbar({ user, isAdmin, logout }) {
     return (
-        <Navbar bg="secondary" expand="lg">
+        <Navbar variant="dark" bg="dark" expand="lg">
             <Navbar.Brand href="/">CFPractice</Navbar.Brand>
             <Navbar.Toggle aria-controls="basicnavbar" />
             <Navbar.Collapse id="basicnavbar">

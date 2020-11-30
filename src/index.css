@@ -11,3 +11,29 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+/* Hero Section */
+
+.hero {
+  background: linear-gradient(rgba(0, 0, 0, 0.5), transparent), url(./assets/image2.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  min-height: 43vh;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.hero h3 {
+  padding: 3rem;
+}
+
+.hero .wrapper {
+  width: 90%;
+  margin: auto;
+}
