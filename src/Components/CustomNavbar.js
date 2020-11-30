@@ -12,6 +12,8 @@ function CustomNavbar({ user, isAdmin, logout }) {
                     <Nav.Link href="/contests">Contests</Nav.Link>
                     <Nav.Link href="/problems">Problems</Nav.Link>
                     <Nav.Link href="/profile">Profile</Nav.Link>
+                    <Nav.Link href="http://tirth.herokuapp.com/">About Us</Nav.Link>
+                    
                 </Nav>
             </Navbar.Collapse>
         </Navbar>

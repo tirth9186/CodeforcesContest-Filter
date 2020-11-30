@@ -1,37 +1,49 @@
 import React from 'react';
-import { Card, Button } from 'react-bootstrap';
+import { Card, Button,CardDeck } from 'react-bootstrap';
 function Home() {
     return (
         <React.Fragment>
             <div className="hero">
             </div>
-        <div className=" mt-3 row align-content-center">
-            <div className="col-sm-6 col-md-6">
+            <CardDeck className="mt-3 mb-3">
                 <Card bg="dark" text="light" >
-                    {/* <Card.Img variant="top" src="problem.jpg" /> */}
+                    <Card.Img variant="top" src="algorithm.png" height="284px" />
                     <Card.Body>
                         <Card.Title>ProblemSet</Card.Title>
                         <Card.Text>
                             All the problems of the past contests held on Codeforces.
                     </Card.Text>
-                        <Button variant="light" href="/problems">Go to ProblemSet</Button>
                     </Card.Body>
+                    <Card.Footer>
+                        <Button variant="light" href="/problems">Go to ProblemSet</Button>
+                    </Card.Footer>
                 </Card>
-            </div>
-            <div className="col-sm-6 col-md-6">
                 <Card bg="dark" text="light">
-                    {/* <Card.Img variant="top" src="contest.jpg" /> */}
+                    <Card.Img variant="top" src="trophy.png" height="284px"  />
+                    
                     <Card.Body>
                         <Card.Title>Contests</Card.Title>
                         <Card.Text>
                             All the past contests held on Codeforces.
                     </Card.Text>
-                        <Button variant="light" href="/contests">Go to Contests</Button>
                     </Card.Body>
+                    <Card.Footer>
+                        <Button variant="light" href="/contests">Go to Contests</Button>
+                    </Card.Footer>
                 </Card>
-            </div>
-            
-        </div>
+                <Card bg="dark" text="light">
+                    <Card.Img variant="top" src="programmer.png" height="284px"  />
+                    <Card.Body>
+                        <Card.Title>Profile</Card.Title>
+                        <Card.Text>
+                            See your submissions history and statistics.
+                    </Card.Text>
+                    </Card.Body>
+                    <Card.Footer>
+                        <Button variant="light" href="/profile">Check profile</Button>
+                    </Card.Footer>
+                </Card>
+            </CardDeck>
         </React.Fragment>
     );
 }

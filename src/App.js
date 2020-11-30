@@ -8,7 +8,7 @@ import Admin from './auth/components/Admin';
 import Login from './auth/components/Login';
 import Register from './auth/components/Register';
 import Profile from './auth/components/Profile';
-
+import {FaFacebook, FaLinkedin, FaGithub } from 'react-icons/fa';
 import { Route, Switch } from 'react-router-dom';
 
 import AuthService from "./auth/services/auth.service";
@@ -47,6 +47,23 @@ function App() {
         <Route path="/admin" component={Admin} exact />
         <Route component={Error} />
       </Switch>
+      
+      <div style={{
+        position: 'relative',
+        top:'5',
+        left: '0',
+        bottom: '0',
+        width:'100%'
+      }}>
+        <footer className="footer bg-dark">
+          <div className="container-fluid text-center">
+            <a className="btn btn-dark" href="https://www.facebook.com/tirth.chaudhary.547"><FaFacebook size="20px" /></a>
+            <a className="btn btn-dark" href="https://www.linkedin.com/in/tirth-chaudhary-49a026129/"><FaLinkedin size="20px" /></a>
+            <a className="btn btn-dark" href="https://github.com/tirth9186"><FaGithub size="20px" /></a>
+            <p className="text-light" >Copyright 2020 All rights reserved. Developed by Tirth.</p>
+          </div>
+        </footer>
+      </div>
     </div>
   );
 };

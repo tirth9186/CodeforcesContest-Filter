@@ -6,7 +6,7 @@ import Input from "react-validation/build/input";
 import Form from "react-validation/build/form";
 import CheckButton from "react-validation/build/button";
 import { CanvasJSChart } from 'canvasjs-react-charts'
-import { Button } from 'react-bootstrap';
+import { Button,Card} from 'react-bootstrap';
 
 const validUsername = (value) => {
     if (value.length < 3 || value.length > 20) {
@@ -190,6 +190,9 @@ const Profile = () => {
             <div className="container">
                 <header className="jumbotron col-sm-6 offset-sm-3">
                     <Form onSubmit={handleSearch} ref={form}>
+                        <Card>
+                            <Card.Img variant="top" src="programmer.png" height="284px" />
+                        </Card>
                         <div className="form-group">
                             <Input
                                 type="text"
